@@ -24,7 +24,7 @@ export default function AtividadeForm({ addAtividade, proximoId }) {
   }
 
   return (
-    <form className="row g-3 justify-content-center align-items-center" onSubmit={handleSubmit}>
+    <form className="row g-3 justify-content-center align-items-center " onSubmit={handleSubmit}>
 
       <div className="col-md-3">
         <label htmlFor="id" className="form-label">ID</label>

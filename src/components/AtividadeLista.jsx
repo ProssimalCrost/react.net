@@ -1,6 +1,6 @@
-import Atividade from './Atividade';
+ import Atividade from './Atividade';
 
-export default function AtividadeLista({ atividades, deletarAtividade }) {
+export default function AtividadeLista({ atividades, deletarAtividade, pegarAtividade }) {
   return (
     <div className="row align-items-center justify-content-center">
       {atividades.map((ativ) => (
@@ -8,6 +8,7 @@ export default function AtividadeLista({ atividades, deletarAtividade }) {
           key={ativ.id}
           ativ={ativ}
           deletarAtividade={deletarAtividade}
+          pegarAtividade={pegarAtividade}
         />
       ))}
     </div>
