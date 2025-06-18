@@ -4,14 +4,21 @@ import AtividadeForm from './components/AtividadeForm';
 
 function App() {
   const [atividades, setAtividades] = useState([]);
-  const [atividade, setAtividade] = useState([]);
+  const [atividade, setAtividade] = useState({ id: 0 });
 
-  function addAtividade(atividade) {
+  function addAtividade(ativ) {
     const novaAtividade = {
-      ...atividade,
+      ...ativ,
       id: atividades.length > 0 ? atividades[atividades.length - 1].id + 1 : 1,
     };
     setAtividades([...atividades, novaAtividade]);
+  }
+
+  function atualizarAtividade(ativ) {
+    setAtividades(
+      atividades.map((item) => (item.id === ativ.id ? ativ : item))
+    );
+    setAtividade({ id: 0 }); // limpa a atividade selecionada após editar
   }
 
   function deletarAtividade(id) {
@@ -20,23 +27,23 @@ function App() {
   }
 
   function pegarAtividade(id) {
-    const= atividade = atividades.filter(((atividade) => atividade.id === id)
-    setAtividade(atividade[0])
-  )
+    const atividade = atividades.find((atividade) => atividade.id === id);
+    setAtividade(atividade);
   }
 
-    return (
+  return (
     <div className="min-vh-100 d-flex flex-column">
-      <div className="container my-auto py-4"> {/* my-auto ajuda na centralização vertical */}
+      <div className="container my-auto py-4">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-10 col-lg-8"> {/* Larguras responsivas */}
-            <h2 className="text-center mb-4">Gerenciador de Atividades</h2>
-            
+          <div className="col-12 col-md-10 col-lg-8">
+            <h2 className="text-center mb-4 text-white">Gerenciador de Atividades</h2>
+
             <div className="card shadow-sm mb-5">
               <div className="card-body p-4">
                 <AtividadeForm
                   addAtividade={addAtividade}
-                  proximoId={atividades.length > 0 ? atividades[atividades.length - 1].id + 1 : 1}
+                  atualizarAtividade={atualizarAtividade}
+                  atividade={atividade}
                 />
               </div>
             </div>
@@ -44,6 +51,7 @@ function App() {
             <AtividadeLista
               atividades={atividades}
               deletarAtividade={deletarAtividade}
+              pegarAtividade={pegarAtividade}
             />
           </div>
         </div>

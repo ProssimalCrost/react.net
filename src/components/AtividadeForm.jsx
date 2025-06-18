@@ -1,39 +1,54 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-export default function AtividadeForm({ addAtividade, proximoId }) {
-  const [prioridade, setPrioridade] = useState('0');
-  const [titulo, setTitulo] = useState('');
-  const [descricao, setDescricao] = useState('');
+export default function AtividadeForm({ addAtividade, atualizarAtividade, atividade }) {
+  const [form, setForm] = useState({
+    id: 0,
+    titulo: '',
+    descricao: '',
+    prioridade: '0',
+  });
+
+  useEffect(() => {
+    if (atividade.id !== 0) {
+      setForm(atividade);
+    }
+  }, [atividade]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!titulo.trim() || !descricao.trim() || prioridade === '0') {
+    if (!form.titulo.trim() || !form.descricao.trim() || form.prioridade === '0') {
       alert('Preencha todos os campos corretamente.');
       return;
     }
 
-    addAtividade({ prioridade, titulo, descricao });
+    if (form.id === 0) {
+      addAtividade(form);
+    } else {
+      atualizarAtividade(form);
+    }
 
-    // Limpa campos após adicionar
-    setPrioridade('0');
-    setTitulo('');
-    setDescricao('');
+    setForm({ id: 0, titulo: '', descricao: '', prioridade: '0' });
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   }
 
   return (
-    <form className="row g-3 justify-content-center align-items-center " onSubmit={handleSubmit}>
-
+    <form className="row g-3" onSubmit={handleSubmit}>
       <div className="col-md-3">
         <label htmlFor="id" className="form-label">ID</label>
         <input
           type="text"
           className="form-control"
           id="id"
-          value={proximoId}
-          readOnly
+          name="id"
+          value={form.id}
+          disabled
         />
       </div>
 
@@ -41,9 +56,10 @@ export default function AtividadeForm({ addAtividade, proximoId }) {
         <label htmlFor="prioridade" className="form-label">Prioridade</label>
         <select
           id="prioridade"
+          name="prioridade"
           className="form-select"
-          value={prioridade}
-          onChange={(e) => setPrioridade(e.target.value)}
+          value={form.prioridade}
+          onChange={handleChange}
         >
           <option value="0">Selecionar...</option>
           <option value="Baixa">Baixa</option>
@@ -58,9 +74,10 @@ export default function AtividadeForm({ addAtividade, proximoId }) {
           type="text"
           className="form-control"
           id="titulo"
+          name="titulo"
           placeholder="Título da atividade"
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
+          value={form.titulo}
+          onChange={handleChange}
         />
       </div>
 
@@ -70,15 +87,16 @@ export default function AtividadeForm({ addAtividade, proximoId }) {
           type="text"
           className="form-control"
           id="descricao"
+          name="descricao"
           placeholder="Descrição da atividade"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
+          value={form.descricao}
+          onChange={handleChange}
         />
       </div>
 
       <div className="col-md-2 d-flex align-items-end">
         <button type="submit" className="btn btn-success">
-          <FontAwesomeIcon icon={faPlus} /> Adicionar
+          <FontAwesomeIcon icon={form.id === 0 ? faPlus : faCheck} /> {form.id === 0 ? 'Adicionar' : 'Salvar'}
         </button>
       </div>
     </form>

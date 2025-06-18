@@ -1,77 +1,45 @@
-import React from 'react';
-import {
-  faEdit,
-  faTrash,
-  faSmile,
-  faClock,
-  faExclamationTriangle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-export default function Atividade({ ativ, deletarAtividade }) {
-  // Ícone baseado na prioridade
-  function getPrioridadeIcon(prioridade) {
-    switch (prioridade) {
-      case 'Baixa':
-        return faSmile;
-      case 'Normal':
-        return faClock;
-      case 'Alta':
-        return faExclamationTriangle;
-      default:
-        return faSmile;
-    }
-  }
-
-  // Cor da borda e do badge baseada na prioridade
-  function getPrioridadeStyle(prioridade) {
-    switch (prioridade) {
-      case 'Baixa':
-        return { border: 'border-success', badge: 'bg-success' };
-      case 'Normal':
-        return { border: 'border-primary', badge: 'bg-primary' };
-      case 'Alta':
-        return { border: 'border-warning', badge: 'bg-warning text-dark' };
-      default:
-        return { border: 'border-secondary', badge: 'bg-secondary' };
-    }
-  }
-
-  const prioridadeStyle = getPrioridadeStyle(ativ.prioridade);
-
+export default function Atividade({ ativ, deletarAtividade, pegarAtividade }) {
   return (
-    <div className="col-md-8 mx-auto mb-4"> {/* Centraliza a coluna e adiciona margem inferior */}
-      <div className={`card shadow-sm ${prioridadeStyle.border}`}>
+    <div className="col-md-5 mb-3">
+      <div className="card shadow-sm">
         <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="card-title mb-0">
-              {ativ.id} - {ativ.titulo}
-            </h5>
-            <span className={`badge ${prioridadeStyle.badge}`}>
-              <FontAwesomeIcon icon={getPrioridadeIcon(ativ.prioridade)} className="me-2" />
-              {ativ.prioridade}
-            </span>
-          </div>
-
+          <h5 className="card-title">
+            {ativ.id} - {ativ.titulo}
+          </h5>
           <p className="card-text">{ativ.descricao}</p>
+          <span className={`badge bg-${prioridadeCor(ativ.prioridade)}`}>
+            {ativ.prioridade}
+          </span>
 
-          <div className="d-flex justify-content-end gap-3 mt-4"> {/* Reduzi o gap e margin-top */}
+          <div className="mt-2">
             <button
-              className="btn btn-outline-primary btn-sm"
-              aria-label="Editar atividade"
-            > onClick={() => pegarAtividade(ativ.id)}
-              <FontAwesomeIcon icon={faEdit} className="me-1" /> Editar
+              className="btn btn-sm btn-outline-primary me-2"
+              onClick={() => pegarAtividade(ativ.id)}
+            >
+              Editar
             </button>
             <button
-              className="btn btn-outline-danger btn-sm"
+              className="btn btn-sm btn-outline-danger"
               onClick={() => deletarAtividade(ativ.id)}
-              aria-label="Deletar atividade"
             >
-              <FontAwesomeIcon icon={faTrash} className="me-1" /> Deletar
+              Deletar
             </button>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function prioridadeCor(prioridade) {
+  switch (prioridade) {
+    case 'Baixa':
+      return 'success';
+    case 'Normal':
+      return 'warning';
+    case 'Alta':
+      return 'danger';
+    default:
+      return 'secondary';
+  }
 }

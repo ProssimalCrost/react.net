@@ -1,4 +1,4 @@
- import Atividade from './Atividade';
+import Atividade from './Atividade';
 
 export default function AtividadeLista({ atividades, deletarAtividade, pegarAtividade }) {
   return (
