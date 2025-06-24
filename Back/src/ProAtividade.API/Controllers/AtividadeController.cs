@@ -1,35 +1,62 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using BackendApp.Data;
+using BackendApp.Models;
 
-namespace ProAtividadeNovo.Controllers
+namespace BackendApp.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class AtividadeController : ControllerBase
+    [Route("api/[controller]")]
+    public class ItemController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<Atividade> Get()
+        private readonly AppDbContext _context;
+
+        public ItemController(AppDbContext context)
         {
-            return new List<Atividade>()
-            {
-                new Atividade(1),
-                new Atividade(2),
-                new Atividade(3)
-            };
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAll()
+        {
+            return await _context.Itens.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Item>> GetById(int id)
+        {
+            var item = await _context.Itens.FindAsync(id);
+            if (item == null) return NotFound();
+            return item;
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Atividade atividade)
+        public async Task<ActionResult<Item>> Create(Item item)
         {
-            return Ok("Recebi atividade");
+            _context.Itens.Add(item);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
 
-        [HttpPut]
-        public IActionResult Put([FromBody] Atividade atividade)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, Item item)
         {
-            return Ok("Recebi atividade");
+            if (id != item.Id) return BadRequest();
+            _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = await _context.Itens.FindAsync(id);
+            if (item == null) return NotFound();
+            _context.Itens.Remove(item);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
-};
-    // Modelo simples de Atividade
-    
+}
+

@@ -1,21 +1,16 @@
+using BackendApp.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configurar banco SQLite (pode mudar para outro como SQL Server)
+builder.Services.AddDbContext<AppDbContext>(opt =>
+    opt.UseSqlite("Data Source=app.db"));
 
+builder.Services.AddControllers();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-// Endpoint raiz para evitar erro 404 no acesso padrão
-app.MapGet("/", () => "API Rodando 👌");
-
 app.Run();

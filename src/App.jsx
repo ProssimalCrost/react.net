@@ -1,18 +1,23 @@
 import { useState } from 'react';
 import AtividadeLista from './components/AtividadeLista';
 import AtividadeForm from './components/AtividadeForm';
+import './App.css'
+import api from './api/atividade'
 
 function App() {
   const [atividades, setAtividades] = useState([]);
   const [atividade, setAtividade] = useState({ id: 0 });
 
+  
   function addAtividade(ativ) {
     const novaAtividade = {
       ...ativ,
       id: atividades.length > 0 ? atividades[atividades.length - 1].id + 1 : 1,
     };
     setAtividades([...atividades, novaAtividade]);
-  }
+ }
+
+
 
   function atualizarAtividade(ativ) {
     setAtividades(
@@ -38,7 +43,7 @@ function App() {
           <div className="col-12 col-md-10 col-lg-8">
             <h2 className="text-center mb-4 text-white">Gerenciador de Atividades</h2>
 
-            <div className="card shadow-sm mb-5">
+            <div className="card shadow-sm mb-5 border border-secondary">
               <div className="card-body p-4">
                 <AtividadeForm
                   addAtividade={addAtividade}

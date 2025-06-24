@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProAtividadeNovo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+477f14a5e69e37fc0a52ba03f97fc1a099b6aa32")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8da18e1b3becc17abc1b10e01c9fbe3dec1a825")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProAtividadeNovo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProAtividadeNovo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
